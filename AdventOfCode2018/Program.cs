@@ -22,8 +22,10 @@ namespace Thomfre.AdventOfCode2018
             {
                 Console.WriteLine($"Solving - {solver.DayName}");
                 Console.WriteLine("Part 1: " + solver.Solve(ProblemPart.Part1));
-                Console.WriteLine("Part 2: " + solver.Solve(ProblemPart.Part2));
+                Console.WriteLine("Part 2: " + solver.Solve(ProblemPart.Part2));               
             }
+
+            Console.Read();
         }
     }
 }
