@@ -8,7 +8,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
     [UsedImplicitly]
     internal class Day1Solver : SolverBase
     {
-        private List<int> _frequencyList;
+        private HashSet<int> _frequencyList;
         private int _iterationCounter;
         public override int DayNumber => 1;
 
@@ -27,7 +27,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     return FormatSolution($"The resulting frequency is [{ConsoleColor.Green}!{frequency}]");
                 case ProblemPart.Part2:
-                    _frequencyList = new List<int>();
+                    _frequencyList = new HashSet<int>();
 
                     int firstRepeatedFrequency = LookForDuplicateFrequencies(commands, 0);
 
