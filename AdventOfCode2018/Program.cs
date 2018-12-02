@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using Autofac;
-using OutputColorizer;
-using Thomfre.AdventOfCode2018.Solvers;
+﻿using Autofac;
 
 namespace Thomfre.AdventOfCode2018
 {
@@ -15,7 +8,7 @@ namespace Thomfre.AdventOfCode2018
 
         private static void Main(string[] args)
         {
-            var builder = new ContainerBuilder();
+            ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterModule<SolverModule>();
             Container = builder.Build();
         }

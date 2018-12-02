@@ -8,6 +8,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
     [UsedImplicitly]
     internal class Day1Solver : SolverBase
     {
+        private List<int> _frequencyList;
+        private int _iterationCounter;
         public override int DayNumber => 1;
 
         public override string Solve(ProblemPart part)
@@ -18,7 +20,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
             switch (part)
             {
-                case ProblemPart.Part1:                   
+                case ProblemPart.Part1:
                     int frequency = commands.Sum(command => int.Parse(command.Replace(" ", "")));
 
                     StopExecutionTimer();
@@ -31,14 +33,12 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"After [{ConsoleColor.Yellow}!{_iterationCounter}] full iterations, the first repeated frequency found was [{ConsoleColor.Green}!{firstRepeatedFrequency}]");                   
+                    return
+                        FormatSolution($"After [{ConsoleColor.Yellow}!{_iterationCounter}] full iterations, the first repeated frequency found was [{ConsoleColor.Green}!{firstRepeatedFrequency}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
         }
-
-        private List<int> _frequencyList;
-        private int _iterationCounter = 0;
 
         private int LookForDuplicateFrequencies(string[] commands, int currentFrequency)
         {
@@ -46,8 +46,12 @@ namespace Thomfre.AdventOfCode2018.Solvers
             {
                 currentFrequency += int.Parse(command.Replace(" ", ""));
 
-                if (_frequencyList.Contains(currentFrequency)) return currentFrequency;
-                _frequencyList.Add(currentFrequency);                
+                if (_frequencyList.Contains(currentFrequency))
+                {
+                    return currentFrequency;
+                }
+
+                _frequencyList.Add(currentFrequency);
             }
 
             _iterationCounter++;

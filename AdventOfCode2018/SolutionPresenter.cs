@@ -96,13 +96,20 @@ namespace Thomfre.AdventOfCode2018
 
         private void ShowSolution(ISolver solver)
         {
-            Colorizer.WriteLine($"Solving - Day {solver.DayNumber}");
-            Console.Write("Working...");
-            Colorizer.WriteLine($"\rPart 1: {solver.Solve(ProblemPart.Part1)}");
-            Console.Write("Working...");
+            try
+            {
+                Colorizer.WriteLine($"Solving - Day {solver.DayNumber}");
+                Console.Write("Working...");
+                Colorizer.WriteLine($"\rPart 1: {solver.Solve(ProblemPart.Part1)}");
+                Console.Write("Working...");
 
-            Colorizer.WriteLine($"\rPart 2: {solver.Solve(ProblemPart.Part2)}");
-            Console.WriteLine("------");
+                Colorizer.WriteLine($"\rPart 2: {solver.Solve(ProblemPart.Part2)}");
+                Console.WriteLine("------");
+            }
+            catch (Exception exception)
+            {
+                Colorizer.WriteLine($"[{ConsoleColor.DarkRed}!Unhandled exception] - oh wow, thomfre really messed up this time: {exception.Message}");
+            }
         }
     }
 }

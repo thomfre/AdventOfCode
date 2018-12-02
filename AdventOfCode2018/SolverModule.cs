@@ -9,14 +9,14 @@ namespace Thomfre.AdventOfCode2018
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
-                .Where(t => t.Name.EndsWith("Solver") && !t.IsAbstract)
-                .AsImplementedInterfaces();
+                   .Where(t => t.Name.EndsWith("Solver") && !t.IsAbstract)
+                   .AsImplementedInterfaces();
 
             builder.RegisterType<SolutionPresenter>()
-                .As<ISolutionPresenter>()
-                .As<IStartable>()
-                .AsSelf()
-                .SingleInstance();
+                   .As<ISolutionPresenter>()
+                   .As<IStartable>()
+                   .AsSelf()
+                   .SingleInstance();
         }
     }
 }
