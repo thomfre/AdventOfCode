@@ -35,7 +35,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     StopExecutionTimer();
 
                     return
-                        FormatSolution($"After [{ConsoleColor.Yellow}!{_iterationCounter}] full iterations, the first repeated frequency found was [{ConsoleColor.Green}!{firstRepeatedFrequency}]");
+                        FormatSolution($"After [{ConsoleColor.Yellow}!{_iterationCounter}] full iterations ({_frequencyList.Count - 1} different frequencies), the first repeated frequency found was [{ConsoleColor.Green}!{firstRepeatedFrequency}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }

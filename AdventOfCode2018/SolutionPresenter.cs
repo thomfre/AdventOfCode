@@ -19,9 +19,11 @@ namespace Thomfre.AdventOfCode2018
         public void Start()
         {
             Console.Clear();
+
             Console.SetCursorPosition(0, 0);
             Colorizer.WriteLine($"[{ConsoleColor.Red}!Advent of Code 2018 - Solver]");
             Colorizer.WriteLine($"[{ConsoleColor.DarkGreen}!by thomfre]");
+            Colorizer.WriteLine("[Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*][Green!*][Red!*]");
             Console.WriteLine();
 
             OutputMenu();
@@ -30,7 +32,7 @@ namespace Thomfre.AdventOfCode2018
         private void ClearAndResetOutput()
         {
             int currentRow = Console.CursorTop - 1;
-            while (currentRow >= 3)
+            while (currentRow >= 4)
             {
                 Console.SetCursorPosition(0, currentRow);
                 Console.Write(new string(' ', Console.WindowWidth));
