@@ -2,7 +2,7 @@
 {
     public interface ISolver
     {
-        string DayName { get; }
+        int DayNumber { get; }
         string Solve(ProblemPart part);
     }
 }

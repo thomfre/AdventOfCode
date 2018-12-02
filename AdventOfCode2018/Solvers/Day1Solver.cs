@@ -6,7 +6,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 {
     public class Day1Solver : SolverBase
     {
-        public override string DayName => "Day1";
+        public override int DayNumber => 1;
 
         public override string Solve(ProblemPart part)
         {
@@ -21,7 +21,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The resulting frequency is {frequency}");
+                    return FormatSolution($"The resulting frequency is [Green!{frequency}]");
                 case ProblemPart.Part2:
                     _frequencyList = new List<int>();
 
@@ -29,7 +29,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"After {_iterationCounter} full iterations, the first repeated frequency found was {firstRepeatedFrequency}");                   
+                    return FormatSolution($"After {_iterationCounter} full iterations, the first repeated frequency found was [Green!{firstRepeatedFrequency}]");                   
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }

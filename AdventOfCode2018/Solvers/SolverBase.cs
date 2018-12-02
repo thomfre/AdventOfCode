@@ -13,9 +13,9 @@ namespace Thomfre.AdventOfCode2018.Solvers
             ExecutionTimer = new Stopwatch();
         }
 
-        protected string InputFile => $@"Input\{DayName}.input";
+        protected string InputFile => $@"Input\Day{DayNumber}.input";
 
-        public abstract string DayName { get; }
+        public abstract int DayNumber { get; }
 
         public abstract string Solve(ProblemPart part);
 
@@ -37,7 +37,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
         protected string FormatSolution(string solution)
         {
-            return $"{solution} - Execution time: {ExecutionTimer.Elapsed.Humanize()}";
+            return $"{solution} - Execution time: [Magenta!{ExecutionTimer.Elapsed.Humanize()}]";
         }
     }
 }
