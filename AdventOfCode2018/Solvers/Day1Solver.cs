@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
-    public class Day1Solver : SolverBase
+    [UsedImplicitly]
+    internal class Day1Solver : SolverBase
     {
         public override int DayNumber => 1;
 
@@ -21,7 +23,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The resulting frequency is [Green!{frequency}]");
+                    return FormatSolution($"The resulting frequency is [{ConsoleColor.Green}!{frequency}]");
                 case ProblemPart.Part2:
                     _frequencyList = new List<int>();
 
@@ -29,7 +31,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"After {_iterationCounter} full iterations, the first repeated frequency found was [Green!{firstRepeatedFrequency}]");                   
+                    return FormatSolution($"After [{ConsoleColor.Yellow}!{_iterationCounter}] full iterations, the first repeated frequency found was [{ConsoleColor.Green}!{firstRepeatedFrequency}]");                   
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }

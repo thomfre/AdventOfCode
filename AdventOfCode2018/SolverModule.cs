@@ -11,6 +11,12 @@ namespace Thomfre.AdventOfCode2018
             builder.RegisterAssemblyTypes(Assembly.GetExecutingAssembly())
                 .Where(t => t.Name.EndsWith("Solver") && !t.IsAbstract)
                 .AsImplementedInterfaces();
+
+            builder.RegisterType<SolutionPresenter>()
+                .As<ISolutionPresenter>()
+                .As<IStartable>()
+                .AsSelf()
+                .SingleInstance();
         }
     }
 }
