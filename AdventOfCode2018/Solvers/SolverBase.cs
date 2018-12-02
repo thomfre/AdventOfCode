@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Humanizer;
 
@@ -14,6 +15,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
         }
 
         protected string InputFile => $@"Input\Day{DayNumber}.input";
+        public TimeSpan ExecutionTime => ExecutionTimer.Elapsed;
 
         public abstract int DayNumber { get; }
 

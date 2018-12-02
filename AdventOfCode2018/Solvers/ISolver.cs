@@ -1,8 +1,11 @@
-﻿namespace Thomfre.AdventOfCode2018.Solvers
+﻿using System;
+
+namespace Thomfre.AdventOfCode2018.Solvers
 {
     public interface ISolver
     {
         int DayNumber { get; }
         string Solve(ProblemPart part);
+        TimeSpan ExecutionTime { get; }
     }
 }

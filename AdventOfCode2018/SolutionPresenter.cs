@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Humanizer;
 using OutputColorizer;
 using Thomfre.AdventOfCode2018.Solvers;
 
@@ -53,10 +54,13 @@ namespace Thomfre.AdventOfCode2018
 
             if (selection.ToLower() == "all")
             {
+                TimeSpan totalExecutionTime = TimeSpan.Zero;
                 foreach (ISolver solver in _solvers)
                 {
                     ShowSolution(solver);
+                    totalExecutionTime = totalExecutionTime.Add(solver.ExecutionTime);
                 }
+                Colorizer.WriteLine($"[{ConsoleColor.Magenta}!Total execution time for all calculations: {totalExecutionTime.Humanize()}]");
             }
             else if (selection.ToLower().StartsWith("day "))
             {

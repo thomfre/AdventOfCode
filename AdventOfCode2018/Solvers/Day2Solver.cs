@@ -39,7 +39,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     int checksum = containsTwo * containsThree;
 
                     StopExecutionTimer();
-                    return FormatSolution($"The checksum for the box IDs are [{ConsoleColor.Red}!{checksum}]");
+                    return FormatSolution($"The checksum for the box IDs are [{ConsoleColor.Green}!{checksum}]");
                 case ProblemPart.Part2:
 
                     Dictionary<string, char[]> boxIdDictionary = boxIds.ToDictionary(b => b.Trim(), c => c.Trim().ToCharArray());
@@ -69,7 +69,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                             StopExecutionTimer();
 
-                            return FormatSolution($"The common letters between [{ConsoleColor.Yellow}!{boxId.Key}] and [{ConsoleColor.Yellow}!{boxIdOther.Key}] is [{ConsoleColor.Red}!{matchingChars}]");
+                            return FormatSolution($"The common letters between [{ConsoleColor.Yellow}!{boxId.Key}] and [{ConsoleColor.Yellow}!{boxIdOther.Key}] is [{ConsoleColor.Green}!{matchingChars}]");
                         }
                     }
 
