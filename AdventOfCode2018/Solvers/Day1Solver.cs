@@ -28,6 +28,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     return FormatSolution($"The resulting frequency is [{ConsoleColor.Green}!{frequency}]");
                 case ProblemPart.Part2:
                     _frequencyList = new HashSet<int>();
+                    _iterationCounter = 0;
 
                     int firstRepeatedFrequency = LookForDuplicateFrequencies(commands, 0);
 
