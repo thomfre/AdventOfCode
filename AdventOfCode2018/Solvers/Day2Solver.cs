@@ -69,7 +69,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                             StopExecutionTimer();
 
-                            return FormatSolution($"The common letters between [{ConsoleColor.Yellow}!{boxId.Key}] and [{ConsoleColor.Yellow}!{boxIdOther.Key}] is [{ConsoleColor.Green}!{matchingChars}]");
+                            return FormatSolution($"The common letters between [{ConsoleColor.Yellow}!{boxId.Key}] and [{ConsoleColor.Yellow}!{boxIdOther.Key}] are [{ConsoleColor.Green}!{matchingChars}]");
                         }
                     }
 
