@@ -10,45 +10,63 @@ namespace Thomfre.AdventOfCode2018.Solvers
     {
         public override int DayNumber => 3;
 
+        private Claim[] _claims;
+        private Dictionary<Coordinate, HashSet<int>> _fabricMap;
+
         public override string Solve(ProblemPart part)
         {
             StartExecutionTimer();
 
-            string input = GetInput();
-            Claim[] claims = input.Split('\n').Select(c => new Claim(c)).ToArray();
-            Dictionary<Coordinate, int> fabricMap = new Dictionary<Coordinate, int>();
-
-            switch (part)
+            if (_fabricMap == null)
             {
-                case ProblemPart.Part1:
-                    foreach (Claim claim in claims)
+                string input = GetInput();
+                _claims = input.Split('\n').Select(c => new Claim(c)).ToArray();
+                _fabricMap = new Dictionary<Coordinate, HashSet<int>>();
+                foreach (Claim claim in _claims)
+                {
+                    for (int x = claim.Left; x < claim.Left + claim.Width; x++)
                     {
-                        for (int x = claim.Left; x < claim.Left + claim.Width; x++)
+                        for (int y = claim.Top; y < claim.Top + claim.Height; y++)
                         {
-                            for (int y = claim.Top; y < claim.Top + claim.Height; y++)
+                            Coordinate coordinate = new Coordinate(x, y);
+                            if (_fabricMap.ContainsKey(coordinate))
                             {
-                                Coordinate coordinate = new Coordinate(x, y);
-                                if (fabricMap.ContainsKey(coordinate))
-                                {
-                                    fabricMap[coordinate]++;
-                                }
-                                else
-                                {
-                                    fabricMap.Add(coordinate, 1);
-                                }
+                                _fabricMap[coordinate].Add(claim.ClaimId);
+                            }
+                            else
+                            {
+                                _fabricMap.Add(coordinate, new HashSet<int> { claim.ClaimId });
                             }
                         }
                     }
+                }
+            }            
 
-                    int collisions = fabricMap.Count(m => m.Value > 1);
+            switch (part)
+            {
+                case ProblemPart.Part1:                    
+                    int collisions = _fabricMap.Count(m => m.Value.Count > 1);
 
                     StopExecutionTimer();
 
                     return FormatSolution($"The number of colliding squares are [{ConsoleColor.Red}!{collisions}]");
                 case ProblemPart.Part2:
+                    int uniqueClaimId = -1;
+
+                    foreach (Claim claim in _claims)
+                    {
+                        if (_fabricMap.Any(f => f.Value.Contains(claim.ClaimId) && f.Value.Count > 1))
+                        {
+                            continue;
+                        }
+
+                        uniqueClaimId = claim.ClaimId;
+                        break;
+                    }
+
                     StopExecutionTimer();
 
-                    return "Not solved yet";
+                    return FormatSolution($"The only claim with unique squares claimed are [{ConsoleColor.Red}!{uniqueClaimId}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
