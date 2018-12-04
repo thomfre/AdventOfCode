@@ -82,7 +82,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The guard most frequenlty asleep at the same minute is [{ConsoleColor.Yellow}!{guard2.Key}] most frequently asleep at minute [{ConsoleColor.Yellow}!{bestMinute2}] making the correct answer [{ConsoleColor.Green}!{AnswerSolution2}]");
+                    return FormatSolution($"The guard most frequently asleep at the same minute is [{ConsoleColor.Yellow}!{guard2.Key}] most frequently asleep at minute [{ConsoleColor.Yellow}!{bestMinute2}] making the correct answer [{ConsoleColor.Green}!{AnswerSolution2}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
