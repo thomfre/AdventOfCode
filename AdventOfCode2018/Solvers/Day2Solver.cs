@@ -15,7 +15,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
             StartExecutionTimer();
             string input = GetInput();
             string[] boxIds = input.Split('\n');
-
+            
             switch (part)
             {
                 case ProblemPart.Part1:
