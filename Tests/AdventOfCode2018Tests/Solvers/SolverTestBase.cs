@@ -7,7 +7,7 @@ using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Tests.Solvers
 {
-    internal abstract class SolverTestBase<TSolver> where TSolver: ISolver
+    internal abstract class SolverTestBase<TSolver> where TSolver : ISolver
     {
         private AutoFake _autoFake;
         protected abstract string TestData1 { get; }

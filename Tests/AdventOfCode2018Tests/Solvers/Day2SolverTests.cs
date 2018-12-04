@@ -1,7 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using Thomfre.AdventOfCode2018.Solvers;
+﻿using Thomfre.AdventOfCode2018.Solvers;
 
 namespace Thomfre.AdventOfCode2018.Tests.Solvers
 {
