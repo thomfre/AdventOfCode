@@ -20,79 +20,64 @@ namespace Thomfre.AdventOfCode2018.Solvers
                                                                .OrderBy(m => m.Date)
                                                                .ToDictionary(m => m.Date, m => m.Movement);
 
-            GuardShift currentShift = null;
-            DateTime lastTime = DateTime.MinValue;
-            GuardState lastState;
-            List<GuardShift> guardShifts = new List<GuardShift>();
+            int currentGuard = 0;
+            int sleepStart = 0;
+            Dictionary<int, Dictionary<int, int>> sleepMap = new Dictionary<int, Dictionary<int, int>>();
             foreach (KeyValuePair<DateTime, string> guardMovement in guardMovements)
             {
-                ;
-
                 if (guardMovement.Value.Contains("falls asleep"))
                 {
-                    TimeSpan awakeTime = guardMovement.Key - lastTime;
-
-                    currentShift.AwakeTime += (int) awakeTime.TotalMinutes;
-
-                    lastState = GuardState.Asleep;
+                    sleepStart = guardMovement.Key.Minute;
                 }
                 else if (guardMovement.Value.Contains("wakes up"))
                 {
-                    TimeSpan sleepTime = guardMovement.Key - lastTime;
+                    for (int i = sleepStart; i < guardMovement.Key.Minute; i++)
+                    {
+                        if (!sleepMap.ContainsKey(currentGuard))
+                        {
+                            sleepMap.Add(currentGuard, new Dictionary<int, int>());
+                        }
 
-                    currentShift.SleepTime += (int) sleepTime.TotalMinutes;
-
-                    lastState = GuardState.Awake;
+                        if (!sleepMap[currentGuard].ContainsKey(i))
+                        {
+                            sleepMap[currentGuard].Add(i, 1);
+                        }
+                        else
+                        {
+                            sleepMap[currentGuard][i]++;
+                        }
+                    }
                 }
                 else if (guardMovement.Value.Contains("#"))
                 {
-                    if (currentShift != null)
-                    {
-                        guardShifts.Add(currentShift);
-                    }
-
                     int start = guardMovement.Value.IndexOf("#", StringComparison.Ordinal);
                     int end = guardMovement.Value.IndexOf(" ", start, StringComparison.Ordinal);
-                    currentShift = new GuardShift {Date = guardMovement.Key, GuardId = int.Parse(guardMovement.Value.Substring(start + 1, end - start - 1))};
-                    lastState = GuardState.Awake;
+                    currentGuard = int.Parse(guardMovement.Value.Substring(start + 1, end - start - 1));
                 }
-
-                lastTime = guardMovement.Key;
             }
 
-            guardShifts.Add(currentShift);
 
             switch (part)
             {
                 case ProblemPart.Part1:
-
-                    var guard = guardShifts.GroupBy(s => s.GuardId).Select(s => new {GuardId = s.Key, TotalSleep = s.Sum(ss => ss.SleepTime)}).OrderByDescending(s => s.TotalSleep).FirstOrDefault();
+                    KeyValuePair<int, Dictionary<int, int>> guard = sleepMap.OrderByDescending(s => s.Value.Values.Sum()).FirstOrDefault();
+                    int bestMinute = guard.Value.OrderByDescending(g => g.Value).Select(g => g.Key).FirstOrDefault();
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"Not solved yet: {guard.GuardId} : {guard.TotalSleep}");
+                    return
+                        FormatSolution($"The guard that sleeps the most is [{ConsoleColor.Yellow}!{guard.Key}], most often asleep at minute [{ConsoleColor.Yellow}!{bestMinute}] making the correct answer [{ConsoleColor.Green}!{guard.Key * bestMinute}]");
                 case ProblemPart.Part2:
+                    KeyValuePair<int, Dictionary<int, int>> guard2 = sleepMap.OrderByDescending(s => s.Value.Values.Max()).FirstOrDefault();
+                    int bestMinute2 = guard2.Value.OrderByDescending(g => g.Value).Select(g => g.Key).FirstOrDefault();
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"Not solved yet");
+                    return
+                        FormatSolution($"The guard most frequenlty asleep at the same minute is [{ConsoleColor.Yellow}!{guard2.Key}] most frequently asleep at minute [{ConsoleColor.Yellow}!{bestMinute2}] making the correct answer [{ConsoleColor.Green}!{guard2.Key * bestMinute2}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
-        }
-
-        internal class GuardShift
-        {
-            public DateTime Date { get; set; }
-            public int GuardId { get; set; }
-            public int AwakeTime { get; set; }
-            public int SleepTime { get; set; }
-        }
-
-        internal enum GuardState
-        {
-            Awake,
-            Asleep
         }
     }
 }
