@@ -30,7 +30,7 @@ namespace Thomfre.AdventOfCode2018
             OutputMenu();
         }
 
-        private void ClearAndResetOutput()
+        private static void ClearAndResetOutput()
         {
             int currentRow = Console.CursorTop - 1;
             while (currentRow >= 4)
@@ -57,8 +57,7 @@ namespace Thomfre.AdventOfCode2018
                 TimeSpan totalExecutionTime = TimeSpan.Zero;
                 foreach (ISolver solver in _solvers)
                 {
-                    ShowSolution(solver);
-                    totalExecutionTime = totalExecutionTime.Add(solver.ExecutionTime);
+                    totalExecutionTime = totalExecutionTime.Add(ShowSolution(solver));
                 }
                 Colorizer.WriteLine($"[{ConsoleColor.Magenta}!Total execution time for all calculations: {totalExecutionTime.Humanize()}]");
             }
@@ -100,22 +99,28 @@ namespace Thomfre.AdventOfCode2018
             OutputMenu();
         }
 
-        private void ShowSolution(ISolver solver)
+        private TimeSpan ShowSolution(ISolver solver)
         {
+            TimeSpan totalExecutionTime = TimeSpan.Zero;
+
             try
-            {
+            {                
                 Colorizer.WriteLine($"Solving - Day {solver.DayNumber}");
                 Console.Write("Working...");
                 Colorizer.WriteLine($"\rPart 1: {solver.Solve(ProblemPart.Part1)}");
+                totalExecutionTime = totalExecutionTime.Add(solver.ExecutionTime);
                 Console.Write("Working...");
 
                 Colorizer.WriteLine($"\rPart 2: {solver.Solve(ProblemPart.Part2)}");
-                Console.WriteLine("------");
+                totalExecutionTime = totalExecutionTime.Add(solver.ExecutionTime);
+                Console.WriteLine("------");                
             }
             catch (Exception exception)
             {
                 Colorizer.WriteLine($"[{ConsoleColor.DarkRed}!Unhandled exception] - oh wow, thomfre really messed up this time: {exception.Message}");
             }
+
+            return totalExecutionTime;
         }
     }
 }
