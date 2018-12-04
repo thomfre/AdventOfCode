@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
     [UsedImplicitly]
     internal class Day2Solver : SolverBase
     {
-        public override int DayNumber => 2;
+        public Day2Solver(IInputLoader inputLoader) : base(inputLoader)
+        {
+        }
+
+        public override int DayNumber => 2;       
 
         public override string Solve(ProblemPart part)
         {
             StartExecutionTimer();
             string input = GetInput();
             string[] boxIds = input.Split('\n');
-            
+
             switch (part)
             {
                 case ProblemPart.Part1:
@@ -38,7 +43,10 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     int checksum = containsTwo * containsThree;
 
+                    AnswerSolution1 = checksum;
+
                     StopExecutionTimer();
+
                     return FormatSolution($"The checksum for the box IDs are [{ConsoleColor.Green}!{checksum}]");
                 case ProblemPart.Part2:
 
@@ -66,6 +74,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
                             {
                                 continue;
                             }
+
+                            AnswerSolution2 = matchingChars;
 
                             StopExecutionTimer();
 

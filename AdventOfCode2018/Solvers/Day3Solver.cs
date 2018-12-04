@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
     [UsedImplicitly]
     internal class Day3Solver : SolverBase
     {
-        public override int DayNumber => 3;
-
         private Claim[] _claims;
         private Dictionary<Coordinate, HashSet<int>> _fabricMap;
+
+        public Day3Solver(IInputLoader inputLoader) : base(inputLoader)
+        {
+        }
+
+        public override int DayNumber => 3;
 
         public override string Solve(ProblemPart part)
         {
@@ -35,17 +40,19 @@ namespace Thomfre.AdventOfCode2018.Solvers
                             }
                             else
                             {
-                                _fabricMap.Add(coordinate, new HashSet<int> { claim.ClaimId });
+                                _fabricMap.Add(coordinate, new HashSet<int> {claim.ClaimId});
                             }
                         }
                     }
                 }
-            }            
+            }
 
             switch (part)
             {
-                case ProblemPart.Part1:                    
+                case ProblemPart.Part1:
                     int collisions = _fabricMap.Count(m => m.Value.Count > 1);
+
+                    AnswerSolution1 = collisions;
 
                     StopExecutionTimer();
 
@@ -63,6 +70,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         uniqueClaimId = claim.ClaimId;
                         break;
                     }
+
+                    AnswerSolution2 = uniqueClaimId;
 
                     StopExecutionTimer();
 

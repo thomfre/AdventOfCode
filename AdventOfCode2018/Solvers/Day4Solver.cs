@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
     [UsedImplicitly]
     internal class Day4Solver : SolverBase
     {
+        public Day4Solver(IInputLoader inputLoader) : base(inputLoader)
+        {
+        }
+
         public override int DayNumber => 4;
 
         public override string Solve(ProblemPart part)
@@ -63,18 +68,21 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     KeyValuePair<int, Dictionary<int, int>> guard = sleepMap.OrderByDescending(s => s.Value.Values.Sum()).FirstOrDefault();
                     int bestMinute = guard.Value.OrderByDescending(g => g.Value).Select(g => g.Key).FirstOrDefault();
 
+                    AnswerSolution1 = guard.Key * bestMinute;
+
                     StopExecutionTimer();
 
                     return
-                        FormatSolution($"The guard that sleeps the most is [{ConsoleColor.Yellow}!{guard.Key}], most often asleep at minute [{ConsoleColor.Yellow}!{bestMinute}] making the correct answer [{ConsoleColor.Green}!{guard.Key * bestMinute}]");
+                        FormatSolution($"The guard that sleeps the most is [{ConsoleColor.Yellow}!{guard.Key}], most often asleep at minute [{ConsoleColor.Yellow}!{bestMinute}] making the correct answer [{ConsoleColor.Green}!{AnswerSolution1}]");
                 case ProblemPart.Part2:
                     KeyValuePair<int, Dictionary<int, int>> guard2 = sleepMap.OrderByDescending(s => s.Value.Values.Max()).FirstOrDefault();
                     int bestMinute2 = guard2.Value.OrderByDescending(g => g.Value).Select(g => g.Key).FirstOrDefault();
 
+                    AnswerSolution2 = guard2.Key* bestMinute2;
+
                     StopExecutionTimer();
 
-                    return
-                        FormatSolution($"The guard most frequenlty asleep at the same minute is [{ConsoleColor.Yellow}!{guard2.Key}] most frequently asleep at minute [{ConsoleColor.Yellow}!{bestMinute2}] making the correct answer [{ConsoleColor.Green}!{guard2.Key * bestMinute2}]");
+                    return FormatSolution($"The guard most frequenlty asleep at the same minute is [{ConsoleColor.Yellow}!{guard2.Key}] most frequently asleep at minute [{ConsoleColor.Yellow}!{bestMinute2}] making the correct answer [{ConsoleColor.Green}!{AnswerSolution2}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }

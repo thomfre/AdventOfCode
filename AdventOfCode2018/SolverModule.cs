@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
+using Thomfre.AdventOfCode2018.Tools;
 using Module = Autofac.Module;
 
 namespace Thomfre.AdventOfCode2018
@@ -17,6 +18,10 @@ namespace Thomfre.AdventOfCode2018
                    .As<IStartable>()
                    .AsSelf()
                    .SingleInstance();
+
+            builder.RegisterType<InputLoader>()
+                   .As<IInputLoader>()
+                   .AsSelf();
         }
     }
 }

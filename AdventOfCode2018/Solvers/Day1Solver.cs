@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
@@ -10,6 +11,11 @@ namespace Thomfre.AdventOfCode2018.Solvers
     {
         private HashSet<int> _frequencyList;
         private int _iterationCounter;
+
+        public Day1Solver(IInputLoader inputLoader) : base(inputLoader)
+        {
+        }
+
         public override int DayNumber => 1;
 
         public override string Solve(ProblemPart part)
@@ -23,6 +29,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
                 case ProblemPart.Part1:
                     int frequency = commands.Sum(command => int.Parse(command.Replace(" ", "")));
 
+                    AnswerSolution1 = frequency;
+
                     StopExecutionTimer();
 
                     return FormatSolution($"The resulting frequency is [{ConsoleColor.Green}!{frequency}]");
@@ -31,6 +39,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     _iterationCounter = 0;
 
                     int firstRepeatedFrequency = LookForDuplicateFrequencies(commands, 0);
+
+                    AnswerSolution2 = firstRepeatedFrequency;
 
                     StopExecutionTimer();
 
