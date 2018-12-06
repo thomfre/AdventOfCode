@@ -22,6 +22,12 @@ namespace Thomfre.AdventOfCode2018.Tests.Solvers
         {
             _autoFake = new AutoFake();
             Solver = _autoFake.Resolve<TSolver>();
+            CustomSetup();
+        }
+
+        public virtual void CustomSetup()
+        {
+
         }
 
         [TearDown]
