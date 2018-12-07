@@ -105,7 +105,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The answer is [{ConsoleColor.Green}!{AnswerSolution2}]");
+                    return FormatSolution($"It took the [{ConsoleColor.Yellow}!{WorkersAvailable}] workers [{ConsoleColor.Green}!{AnswerSolution2}] seconds to complete the task");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }

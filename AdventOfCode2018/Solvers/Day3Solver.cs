@@ -56,7 +56,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The number of colliding squares are [{ConsoleColor.Red}!{collisions}]");
+                    return FormatSolution($"The number of colliding squares are [{ConsoleColor.Green}!{collisions}]");
                 case ProblemPart.Part2:
                     int uniqueClaimId = -1;
 
@@ -75,7 +75,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The only claim with unique squares claimed are [{ConsoleColor.Red}!{uniqueClaimId}]");
+                    return FormatSolution($"The only claim with unique squares claimed are [{ConsoleColor.Green}!{uniqueClaimId}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
