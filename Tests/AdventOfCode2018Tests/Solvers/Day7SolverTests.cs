@@ -15,6 +15,12 @@ Step F must be finished before step E can begin.";
         protected override string TestData2 => TestData1;
 
         protected override object CorrectAnswer1 => "CABDFE";
-        protected override object CorrectAnswer2 => null;
+        protected override object CorrectAnswer2 => 15;
+
+        public override void CustomSetup()
+        {
+            Solver.WorkersAvailable = 2;
+            Solver.BaseTimeCost = 0;
+        }
     }
 }
