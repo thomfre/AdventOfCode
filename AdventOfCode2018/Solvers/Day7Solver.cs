@@ -39,31 +39,24 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         dependencyDictionary[child].Add(parent);
                     }
 
-                    List<string> grandParents = dependencyDictionary.Values.SelectMany(x => x)
-                                                             .Where(x => !dependencyDictionary.ContainsKey(x))
-                                                             .Distinct()
-                                                             .OrderBy(x => x)
-                                                             .ToList();
+                    foreach (string grandParent in dependencyDictionary.Values.SelectMany(x => x)
+                                                                       .Where(x => !dependencyDictionary.ContainsKey(x))
+                                                                       .Distinct()
+                                                                       .OrderBy(x => x))
+                    {
+                        dependencyDictionary.Add(grandParent, new List<string>());
+                    }
 
                     List<string> solution = new List<string>();
-                    solution.Add(ShiftList(grandParents));
 
                     while (dependencyDictionary.Count > 0)
                     {
-                        (string child, List<string> parents) = dependencyDictionary.Where(x => x.Value.All(p => solution.Contains(p))).OrderBy(x => x.Key).FirstOrDefault();
-                        if (child == null)
-                        {
-                            string grandParent = ShiftList(grandParents);
-                            solution.Add(grandParent);
-                            continue;
-                        }
-
+                        (string child, List<string> parents) = dependencyDictionary.OrderBy(x => x.Key).First(x => x.Value.Count == 0 || x.Value.All(p => solution.Contains(p)));
                         dependencyDictionary.Remove(child);
                         solution.Add(child);
                     }
 
                     AnswerSolution1 = string.Join("", solution);
-                    //Give BTEUFNVADWGPLRJOHMXKZQCISY, which is wrong
 
                     StopExecutionTimer();
 
@@ -76,18 +69,6 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     return FormatSolution($"The answer is [{ConsoleColor.Green}!{AnswerSolution2}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
-            }
-
-            string ShiftList(List<string> list)
-            {
-                if (list.Count == 0)
-                {
-                    return null;
-                }
-
-                string firstItem = list[0];
-                list.RemoveAt(0);
-                return firstItem;
             }
         }
     }
