@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using JetBrains.Annotations;
 using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
-    [UsedImplicitly]
     internal class Day3Solver : SolverBase
     {
         private Claim[] _claims;
-        private Dictionary<Coordinate, HashSet<int>> _fabricMap;
+        private Dictionary<Point, HashSet<int>> _fabricMap;
 
         public Day3Solver(IInputLoader inputLoader) : base(inputLoader)
         {
@@ -26,14 +25,14 @@ namespace Thomfre.AdventOfCode2018.Solvers
             {
                 string input = GetInput();
                 _claims = input.Split('\n').Select(c => new Claim(c)).ToArray();
-                _fabricMap = new Dictionary<Coordinate, HashSet<int>>();
+                _fabricMap = new Dictionary<Point, HashSet<int>>();
                 foreach (Claim claim in _claims)
                 {
                     for (int x = claim.Left; x < claim.Left + claim.Width; x++)
                     {
                         for (int y = claim.Top; y < claim.Top + claim.Height; y++)
                         {
-                            Coordinate coordinate = new Coordinate(x, y);
+                            Point coordinate = new Point(x, y);
                             if (_fabricMap.ContainsKey(coordinate))
                             {
                                 _fabricMap[coordinate].Add(claim.ClaimId);
@@ -78,18 +77,6 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     return FormatSolution($"The only claim with unique squares claimed are [{ConsoleColor.Green}!{uniqueClaimId}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
-            }
-        }
-
-        internal struct Coordinate
-        {
-            public int X { get; set; }
-            public int Y { get; set; }
-
-            public Coordinate(int x, int y)
-            {
-                X = x;
-                Y = y;
             }
         }
 

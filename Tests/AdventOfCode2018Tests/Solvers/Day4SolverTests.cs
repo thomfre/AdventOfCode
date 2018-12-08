@@ -1,7 +1,9 @@
-﻿using Thomfre.AdventOfCode2018.Solvers;
+﻿using JetBrains.Annotations;
+using Thomfre.AdventOfCode2018.Solvers;
 
 namespace Thomfre.AdventOfCode2018.Tests.Solvers
 {
+    [UsedImplicitly]
     internal class Day4SolverTests : SolverTestBase<Day4Solver>
     {
         protected override string TestData1 => @"[1518-11-01 00:00] Guard #10 begins shift

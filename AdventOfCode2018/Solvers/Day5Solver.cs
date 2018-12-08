@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using JetBrains.Annotations;
 using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
-    [UsedImplicitly]
     internal class Day5Solver : SolverBase
     {
         public Day5Solver(IInputLoader inputLoader) : base(inputLoader)
@@ -19,7 +17,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
         public override string Solve(ProblemPart part)
         {
             StartExecutionTimer();
-            string input = GetInput();            
+            string input = GetInput();
 
             switch (part)
             {
@@ -66,19 +64,20 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The best unit to remove is [{ConsoleColor.Yellow}!{char.ToLower(bestToRemove.Key)}/{char.ToUpper(bestToRemove.Key)}] giving the result [{ConsoleColor.Green}!{bestToRemove.Value}]");
+                    return
+                        FormatSolution($"The best unit to remove is [{ConsoleColor.Yellow}!{char.ToLower(bestToRemove.Key)}/{char.ToUpper(bestToRemove.Key)}] giving the result [{ConsoleColor.Green}!{bestToRemove.Value}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
         }
 
         private string RemovePolymers(string input)
-        {            
+        {
             int i = 0;
             while (i < input.Length - 1)
             {
                 char current = Convert.ToChar(input.Substring(i, 1));
-                char next = Convert.ToChar(input.Substring(i+1, 1));
+                char next = Convert.ToChar(input.Substring(i + 1, 1));
                 if (char.ToLower(current) == char.ToLower(next))
                 {
                     if (char.IsUpper(current) != char.IsUpper(next))
@@ -86,6 +85,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         input = input.Remove(i, 2);
                     }
                 }
+
                 i++;
             }
 

@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
-    [UsedImplicitly]
     internal class Day2Solver : SolverBase
     {
         public Day2Solver(IInputLoader inputLoader) : base(inputLoader)
         {
         }
 
-        public override int DayNumber => 2;       
+        public override int DayNumber => 2;
 
         public override string Solve(ProblemPart part)
         {
@@ -79,7 +77,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                             StopExecutionTimer();
 
-                            return FormatSolution($"The common letters between [{ConsoleColor.Yellow}!{boxId.Key}] and [{ConsoleColor.Yellow}!{boxIdOther.Key}] are [{ConsoleColor.Green}!{matchingChars}]");
+                            return
+                                FormatSolution($"The common letters between [{ConsoleColor.Yellow}!{boxId.Key}] and [{ConsoleColor.Yellow}!{boxIdOther.Key}] are [{ConsoleColor.Green}!{matchingChars}]");
                         }
                     }
 

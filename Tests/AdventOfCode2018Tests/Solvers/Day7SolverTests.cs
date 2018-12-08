@@ -1,7 +1,9 @@
-﻿using Thomfre.AdventOfCode2018.Solvers;
+﻿using JetBrains.Annotations;
+using Thomfre.AdventOfCode2018.Solvers;
 
 namespace Thomfre.AdventOfCode2018.Tests.Solvers
 {
+    [UsedImplicitly]
     internal class Day7SolverTests : SolverTestBase<Day7Solver>
     {
         protected override string TestData1 => @"Step C must be finished before step A can begin.

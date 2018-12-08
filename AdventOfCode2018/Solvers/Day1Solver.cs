@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
-    [UsedImplicitly]
     internal class Day1Solver : SolverBase
     {
         private HashSet<int> _frequencyList;

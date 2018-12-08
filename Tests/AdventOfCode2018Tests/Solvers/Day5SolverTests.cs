@@ -1,7 +1,9 @@
-﻿using Thomfre.AdventOfCode2018.Solvers;
+﻿using JetBrains.Annotations;
+using Thomfre.AdventOfCode2018.Solvers;
 
 namespace Thomfre.AdventOfCode2018.Tests.Solvers
 {
+    [UsedImplicitly]
     internal class Day5SolverTests : SolverTestBase<Day5Solver>
     {
         protected override string TestData1 => "dabAcCaCBAcCcaDA";

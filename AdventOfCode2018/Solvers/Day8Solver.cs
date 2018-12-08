@@ -17,9 +17,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
         {
             StartExecutionTimer();
             int[] license = GetInput().Split(' ').Select(int.Parse).ToArray();
-            List<Node> nodes = new List<Node>();
 
-            nodes = GetNodes(license).ToList();
+            List<Node> nodes = GetNodes(license).ToList();
 
             switch (part)
             {
@@ -100,12 +99,6 @@ namespace Thomfre.AdventOfCode2018.Solvers
             {
                 Children = new List<Node>();
                 Metadata = new List<int>();
-            }
-
-            public Node(IEnumerable<Node> nodes, IEnumerable<int> metadata)
-            {
-                Children = new List<Node>(nodes);
-                Metadata = new List<int>(metadata);
             }
 
             public List<Node> Children { get; set; }

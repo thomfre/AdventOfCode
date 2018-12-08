@@ -54,7 +54,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     while (dependencyDictionary.Count > 0)
                     {
-                        (char child, List<char> parents) = dependencyDictionary.OrderBy(x => x.Key).First(x => x.Value.Count == 0 || x.Value.All(p => solution.Contains(p)));
+                        (char child, List<char> _) = dependencyDictionary.OrderBy(x => x.Key).First(x => x.Value.Count == 0 || x.Value.All(p => solution.Contains(p)));
                         dependencyDictionary.Remove(child);
                         solution.Add(child);
                     }

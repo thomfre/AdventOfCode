@@ -6,7 +6,7 @@ namespace Thomfre.AdventOfCode2018
     {
         public static IContainer Container;
 
-        private static void Main(string[] args)
+        private static void Main()
         {
             ContainerBuilder builder = new ContainerBuilder();
             builder.RegisterModule<SolverModule>();
