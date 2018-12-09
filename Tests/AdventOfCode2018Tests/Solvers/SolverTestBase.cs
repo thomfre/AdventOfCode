@@ -9,7 +9,7 @@ namespace Thomfre.AdventOfCode2018.Tests.Solvers
 {
     internal abstract class SolverTestBase<TSolver> where TSolver : ISolver
     {
-        private AutoFake _autoFake;
+        protected AutoFake AutoFake;
         protected abstract string TestData1 { get; }
         protected abstract string TestData2 { get; }
         protected abstract object CorrectAnswer1 { get; }
@@ -20,8 +20,8 @@ namespace Thomfre.AdventOfCode2018.Tests.Solvers
         [SetUp]
         public void Setup()
         {
-            _autoFake = new AutoFake();
-            Solver = _autoFake.Resolve<TSolver>();
+            AutoFake = new AutoFake();
+            Solver = AutoFake.Resolve<TSolver>();
             CustomSetup();
         }
 
@@ -33,13 +33,13 @@ namespace Thomfre.AdventOfCode2018.Tests.Solvers
         [TearDown]
         public void TearDown()
         {
-            _autoFake?.Dispose();
+            AutoFake?.Dispose();
         }
 
         [Test]
         public void Solution_for_first_part_is_calculated_correctly()
         {
-            A.CallTo(() => _autoFake.Resolve<IInputLoader>().LoadInput(A<int>._)).Returns(TestData1);
+            A.CallTo(() => AutoFake.Resolve<IInputLoader>().LoadInput(A<int>._)).Returns(TestData1);
             Solver.Solve(ProblemPart.Part1);
             Solver.Answer1.Should().Be(CorrectAnswer1);
         }
@@ -47,7 +47,7 @@ namespace Thomfre.AdventOfCode2018.Tests.Solvers
         [Test]
         public void Solution_for_second_part_is_calculated_correctly()
         {
-            A.CallTo(() => _autoFake.Resolve<IInputLoader>().LoadInput(A<int>._)).Returns(TestData2);
+            A.CallTo(() => AutoFake.Resolve<IInputLoader>().LoadInput(A<int>._)).Returns(TestData2);
             Solver.Solve(ProblemPart.Part2);
             Solver.Answer2.Should().Be(CorrectAnswer2);
         }
