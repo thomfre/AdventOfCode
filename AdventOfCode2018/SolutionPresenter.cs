@@ -14,7 +14,7 @@ namespace Thomfre.AdventOfCode2018
 
         public SolutionPresenter(IEnumerable<ISolver> solvers)
         {
-            _solvers = solvers;
+            _solvers = solvers.OrderBy(s => s.DayNumber);
         }
 
         public void Start()
