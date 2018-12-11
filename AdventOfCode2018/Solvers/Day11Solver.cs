@@ -8,6 +8,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
 {
     internal class Day11Solver : SolverBase
     {
+        private const int GridSize = 300;
+
         public Day11Solver(IInputLoader inputLoader) : base(inputLoader)
         {
         }
@@ -18,23 +20,23 @@ namespace Thomfre.AdventOfCode2018.Solvers
         {
             StartExecutionTimer();
             int serialNumber = int.Parse(GetInput().Trim());
-            Dictionary<Point, int> fuelCellGrid = new Dictionary<Point, int>();
+            int[,] fuelCellGrid = new int[GridSize, GridSize];
 
-            for (int x = 1; x <= 300; x++)
-            for (int y = 1; y <= 300; y++)
+            for (int x = 0; x < GridSize; x++)
+            for (int y = 0; y < GridSize; y++)
             {
-                Point fuelCell = new Point(x, y);
-                int power = CalculateFuelCellPower(serialNumber, fuelCell);
-                fuelCellGrid.Add(fuelCell, power);
+                int power = CalculateFuelCellPower(serialNumber, x, y);
+                fuelCellGrid[x, y] = power;
             }
 
             switch (part)
             {
                 case ProblemPart.Part1:
                     Dictionary<Point, int> fuelCellValues = new Dictionary<Point, int>();
-                    foreach (KeyValuePair<Point, int> fuelCell in fuelCellGrid)
+                    for (int fuelCellX = 0; fuelCellX < GridSize; fuelCellX++)
+                    for (int fuelCellY = 0; fuelCellY < GridSize; fuelCellY++)
                     {
-                        if (300 - fuelCell.Key.X < 3 || 300 - fuelCell.Key.Y < 3)
+                        if (GridSize - fuelCellX < 3 || GridSize - fuelCellY < 3)
                         {
                             continue;
                         }
@@ -43,12 +45,12 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         for (int x = 0; x < 3; x++)
                         for (int y = 0; y < 3; y++)
                         {
-                            totalValue += fuelCellGrid[new Point(fuelCell.Key.X + x, fuelCell.Key.Y + y)];
+                            totalValue += fuelCellGrid[fuelCellX + x, fuelCellY + y];
                         }
 
                         if (totalValue > 0)
                         {
-                            fuelCellValues.Add(fuelCell.Key, totalValue);
+                            fuelCellValues.Add(new Point(fuelCellX, fuelCellY), totalValue);
                         }
                     }
 
@@ -61,51 +63,85 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     return
                         FormatSolution($"The X,Y coordinate for the top left of the best 3x3 fuel cell grid is [{ConsoleColor.Green}!{bestCell.Key.X},{bestCell.Key.Y}] (giving a total power of [{ConsoleColor.Yellow}!{bestCell.Value}])");
                 case ProblemPart.Part2:
+                    int highestValue = 0;
+                    PointSize bestValue = new PointSize(0, 0, 0);
 
-                    Dictionary<(Point Coordinate, int Size), int> fuelCellValueMap = new Dictionary<(Point, int), int>();
-                    for (int i = 1; i <= 300; i++)
+                    for (int size = 1; size <= GridSize; size++)
                     {
-                        for (int X = 1; X < 300 - i; X++)
-                        for (int Y = 1; Y < 300 - i; Y++)
+                        Console.Write($"-{size}");
+                        for (int x = 0; x < GridSize - size + 1; x++)
+                        for (int y = 0; y < GridSize - size + 1; y++)
                         {
-                            int totalValue = 0;
-                            for (int x = 0; x < i; x++)
-                            for (int y = 0; y < i; y++)
+                            int sum = 0;
+                            for (int xx = 0; xx < size; xx++)
+                            for (int yy = 0; yy < size; yy++)
                             {
-                                totalValue += fuelCellGrid[new Point(X + x, Y + y)];
+                                sum += fuelCellGrid[x + xx, y + xx];
                             }
 
-                            if (totalValue > 0)
+                            if (sum <= highestValue)
                             {
-                                fuelCellValueMap.Add((new Point(X, Y), i), totalValue);
+                                continue;
                             }
+
+                            highestValue = sum;
+                            bestValue = new PointSize(x, y, size);
                         }
                     }
 
 
-                    KeyValuePair<(Point Coordinate, int Size), int> bestCell2 = fuelCellValueMap.OrderByDescending(f => f.Value).First();
-
-                    AnswerSolution2 = bestCell2.Key;
+                    AnswerSolution2 = bestValue;
 
                     StopExecutionTimer();
 
                     return
-                        FormatSolution($"The X,Y coordinate for the top left of the best fuel cell grid is [{ConsoleColor.Green}!{bestCell2.Key.Coordinate.X},{bestCell2.Key.Coordinate.Y},{bestCell2.Key.Size}] (giving a total power of [{ConsoleColor.Yellow}!{bestCell2.Value}])");
+                        FormatSolution($"The X,Y coordinate for the top left of the best fuel cell grid is [{ConsoleColor.Green}!{bestValue.X},{bestValue.Y},{bestValue.Size}] (giving a total power of [{ConsoleColor.Yellow}!{highestValue}])");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
         }
 
-        public int CalculateFuelCellPower(int serialNumber, Point fuelCell)
+        public int CalculateFuelCellPower(int serialNumber, int x, int y)
         {
-            int rackId = fuelCell.X + 10;
-            int initialPower = rackId * fuelCell.Y;
+            int rackId = x + 10;
+            int initialPower = rackId * y;
             int powerLevel = initialPower + serialNumber;
             powerLevel *= rackId;
             powerLevel = powerLevel < 100 ? 0 : powerLevel / 100 % 10;
             powerLevel -= 5;
 
             return powerLevel;
+        }
+
+        internal class PointSize
+        {
+            public PointSize(int x, int y, int size)
+            {
+                X = x;
+                Y = y;
+                Size = size;
+            }
+
+            public int X { get; }
+            public int Y { get; }
+            public int Size { get; }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int hash = 269;
+                    hash = hash * 19 + X.GetHashCode();
+                    hash = hash * 19 + Y.GetHashCode();
+                    hash = hash * 19 + Size.GetHashCode();
+                    return hash;
+                }
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is PointSize other && other.X == X && other.Y == Y && other.Size == Size;
+            }
         }
     }
 }
