@@ -102,7 +102,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
             }
         }
 
-        private int CalculateFuelCellPower(int serialNumber, int x, int y)
+        internal int CalculateFuelCellPower(int serialNumber, int x, int y)
         {
             int rackId = x + 10;
             int initialPower = rackId * y;
