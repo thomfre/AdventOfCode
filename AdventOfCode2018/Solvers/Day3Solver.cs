@@ -85,8 +85,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
             public Claim(string claim)
             {
                 string[] claimParts = claim.Split(' ');
-                ClaimId = int.Parse(claimParts[0].Replace("#", ""));
-                int[] xy = claimParts[2].Replace(":", "").Split(',').Select(int.Parse).ToArray();
+                ClaimId = int.Parse(claimParts[0].Replace("#", string.Empty));
+                int[] xy = claimParts[2].Replace(":", string.Empty).Split(',').Select(int.Parse).ToArray();
                 Left = xy[0];
                 Top = xy[1];
                 int[] wh = claimParts[3].Split('x').Select(int.Parse).ToArray();

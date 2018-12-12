@@ -56,7 +56,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         foreach (KeyValuePair<string, char[]> boxIdOther in boxIdDictionary)
                         {
                             int matching = 0;
-                            string matchingChars = "";
+                            string matchingChars = string.Empty;
                             for (int i = 0; i < boxId.Value.Length; i++)
                             {
                                 if (boxId.Value[i] != boxIdOther.Value[i])

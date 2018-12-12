@@ -25,7 +25,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
             switch (part)
             {
                 case ProblemPart.Part1:
-                    int frequency = commands.Sum(command => int.Parse(command.Replace(" ", "")));
+                    int frequency = commands.Sum(command => int.Parse(command.Replace(" ", string.Empty)));
 
                     AnswerSolution1 = frequency;
 
@@ -53,7 +53,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
         {
             foreach (string command in commands)
             {
-                currentFrequency += int.Parse(command.Replace(" ", ""));
+                currentFrequency += int.Parse(command.Replace(" ", string.Empty));
 
                 if (_frequencyList.Contains(currentFrequency))
                 {

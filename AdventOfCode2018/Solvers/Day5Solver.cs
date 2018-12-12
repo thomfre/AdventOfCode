@@ -45,7 +45,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     foreach (char uniqueUnit in uniqueUnits)
                     {
                         string inputCopy = input;
-                        inputCopy = inputCopy.Replace(uniqueUnit.ToString(), "", true, CultureInfo.InvariantCulture);
+                        inputCopy = inputCopy.Replace(uniqueUnit.ToString(), string.Empty, true, CultureInfo.InvariantCulture);
 
                         polymersRemoved = 1;
                         while (polymersRemoved > 0)

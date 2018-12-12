@@ -59,7 +59,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         solution.Add(child);
                     }
 
-                    AnswerSolution1 = string.Join("", solution);
+                    AnswerSolution1 = string.Join(string.Empty, solution);
 
                     StopExecutionTimer();
 
