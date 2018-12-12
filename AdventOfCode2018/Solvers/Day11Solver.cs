@@ -69,14 +69,16 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     for (int size = 1; size <= GridSize; size++)
                     {
                         Console.Write($"-{size}");
-                        for (int x = 0; x < GridSize - size + 1; x++)
                         for (int y = 0; y < GridSize - size + 1; y++)
+
+                        for (int x = 0; x < GridSize - size + 1; x++)
                         {
                             int sum = 0;
-                            for (int xx = 0; xx < size; xx++)
                             for (int yy = 0; yy < size; yy++)
+
+                            for (int xx = 0; xx < size; xx++)
                             {
-                                sum += fuelCellGrid[x + xx, y + xx];
+                                sum += fuelCellGrid[x + xx, y + yy];
                             }
 
                             if (sum <= highestValue)
@@ -89,7 +91,6 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         }
                     }
 
-
                     AnswerSolution2 = bestValue;
 
                     StopExecutionTimer();
@@ -101,7 +102,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
             }
         }
 
-        public int CalculateFuelCellPower(int serialNumber, int x, int y)
+        private int CalculateFuelCellPower(int serialNumber, int x, int y)
         {
             int rackId = x + 10;
             int initialPower = rackId * y;
