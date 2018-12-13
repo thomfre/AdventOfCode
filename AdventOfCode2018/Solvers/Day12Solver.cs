@@ -43,13 +43,13 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The answer [{ConsoleColor.Green}!{AnswerSolution1}]");
+                    return FormatSolution($"The number of plants at the end of the cycle is [{ConsoleColor.Green}!{AnswerSolution1}]");
                 case ProblemPart.Part2:
                     AnswerSolution2 = EvolvePlants(plants, growthRules, 50000000000);
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The answer [{ConsoleColor.Green}!{AnswerSolution2}]");
+                    return FormatSolution($"The number of plants back in our time is [{ConsoleColor.Green}!{AnswerSolution2}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
