@@ -54,7 +54,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The answer [{ConsoleColor.Green}!{AnswerSolution1}]");
+                    return FormatSolution($"The location of the first collision is at [{ConsoleColor.Green}!{AnswerSolution1}] after [{ConsoleColor.Yellow}!{crashedCart.NumberOfTicks} ticks]");
                 case ProblemPart.Part2:
                     while (carts.Count > 1)
                     {
@@ -80,7 +80,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The answer [{ConsoleColor.Green}!{AnswerSolution2}]");
+                    return FormatSolution($"The last remaining cart, after all others have collided is located at [{ConsoleColor.Green}!{AnswerSolution2}] after [{ConsoleColor.Yellow}!{lastCartStanding.NumberOfTicks} ticks]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
