@@ -61,7 +61,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     {
                         PrintCave(false, cave, units, battleRoundCounter);
 
-                        IOrderedEnumerable<Unit> unitMoveOrder = units.OrderBy(u => u.Location.Y).ThenBy(u => u.Location.X);
+                        IOrderedEnumerable<Unit> unitMoveOrder = units.Where(u => u.IsAlive).OrderBy(u => u.Location.Y).ThenBy(u => u.Location.X);
                         foreach (Unit unit in unitMoveOrder)
                         {
                             unit.PlayRound(cave, units);
@@ -178,9 +178,9 @@ namespace Thomfre.AdventOfCode2018.Solvers
                                     };
                                     enemySurroundings.ForEach(es =>
                                                               {
-                                                                  if (cave[es] == CaveElement.Ground)
+                                                                  if (!inRange.Contains(enemy.Location) && cave[es] == CaveElement.Ground)
                                                                   {
-                                                                      inRange.Add(es);
+                                                                      inRange.Add(enemy.Location);
                                                                   }
 
                                                                   if (es == Location)
@@ -200,13 +200,13 @@ namespace Thomfre.AdventOfCode2018.Solvers
                 foreach (Point pointInRange in inRange)
                 {
                     int step = 0;
-                    Dictionary<Point, int> shits = new Dictionary<Point, int> {{Location, step}};
+                    Dictionary<Point, int> moveableArea = new Dictionary<Point, int> {{Location, step}};
 
-                    while (!shits.ContainsKey(pointInRange))
+                    while (!moveableArea.ContainsKey(pointInRange))
                     {
                         step++;
                         bool anyAbleToMove = false;
-                        List<Point> keys = shits.Where(pair => pair.Value == step - 1).Select(pair => pair.Key).ToList();
+                        List<Point> keys = moveableArea.Where(pair => pair.Value == step - 1).Select(pair => pair.Key).ToList();
                         foreach (Point currentPoint in keys)
                         {
                             Point[] neighbors =
@@ -218,14 +218,14 @@ namespace Thomfre.AdventOfCode2018.Solvers
                             };
                             neighbors.ForEach(p =>
                                               {
-                                                  if (shits.ContainsKey(p))
+                                                  if (moveableArea.ContainsKey(p))
                                                   {
                                                       return;
                                                   }
 
                                                   if (cave[p] == CaveElement.Ground)
                                                   {
-                                                      shits.Add(p, step);
+                                                      moveableArea.Add(p, step);
                                                       anyAbleToMove = true;
                                                   }
 
@@ -237,16 +237,41 @@ namespace Thomfre.AdventOfCode2018.Solvers
                                                   HashSet<Point> route = new HashSet<Point> {pointInRange};
                                                   for (int i = step - 1; i > 0; i--)
                                                   {
-                                                      foreach (KeyValuePair<Point, int> point in shits.Where(point => point.Value == i))
-                                                      {
-                                                          if (ManhattanDistance(point.Key, route.Last()) == 1)
-                                                          {
-                                                              route.Add(point.Key);
-                                                          }
-                                                      }
+                                                      moveableArea.Where(point => point.Value == i)
+                                                                  .OrderBy(c => c.Key.Y)
+                                                                  .ThenBy(c => c.Key.X)
+                                                                  .Select(c => c.Key)
+                                                                  .ForEach(candidate =>
+                                                                           {
+                                                                               if (route.Any(r => ManhattanDistance(r, candidate) == 1))
+                                                                               {
+                                                                                   route.Add(candidate);
+                                                                               }
+                                                                           });
                                                   }
 
-                                                  routes.Add(pointInRange, (route.Reverse().First(), step));
+                                                  Point closestRoutePoint = route.Where(r => ManhattanDistance(Location, r) == 1)
+                                                                                 .OrderBy(r => r.Y)
+                                                                                 .ThenBy(r => r.X)
+                                                                                 .First();
+
+                                                  if (routes.ContainsKey(pointInRange))
+                                                  {
+                                                      if (routes[pointInRange].hopsNeeded > step)
+                                                      {
+                                                          routes[pointInRange] = (closestRoutePoint, step);
+                                                      }
+                                                      else if (routes[pointInRange].hopsNeeded == step
+                                                            && (routes[pointInRange].moveTo.Y > closestRoutePoint.Y
+                                                             || routes[pointInRange].moveTo.Y == closestRoutePoint.Y && routes[pointInRange].moveTo.X > closestRoutePoint.X))
+                                                      {
+                                                          routes[pointInRange] = (closestRoutePoint, step);
+                                                      }
+                                                  }
+                                                  else
+                                                  {
+                                                      routes.Add(pointInRange, (closestRoutePoint, step));
+                                                  }
                                               });
                         }
 
