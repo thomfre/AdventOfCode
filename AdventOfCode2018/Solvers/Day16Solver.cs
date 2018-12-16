@@ -18,39 +18,108 @@ namespace Thomfre.AdventOfCode2018.Solvers
         {
             StartExecutionTimer();
             string[] input = GetInput().Trim().Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            List<Sample> samples = new List<Sample>();
+
+            int programStart = -1;
+
+            for (int i = 0; i < input.Length; i += 4)
+            {
+                if (!input[i].StartsWith("Before"))
+                {
+                    programStart = i + 3;
+                    break;
+                }
+
+                IEnumerable<int> start = input[i].Replace("Before: [", "").Replace("]", string.Empty).Split(',').Select(x => int.Parse(x.Trim()));
+                IEnumerable<int> instruction = input[i + 1].Split(' ').Select(int.Parse);
+                IEnumerable<int> end = input[i + 2].Replace("After:  [", "").Replace("]", string.Empty).Split(',').Select(x => int.Parse(x.Trim()));
+
+                samples.Add(new Sample(start, end, instruction));
+            }
 
             switch (part)
             {
                 case ProblemPart.Part1:
-                    List<Sample> samples = new List<Sample>();
-
-                    for (int i = 0; i < input.Length; i += 4)
-                    {
-                        if (!input[i].StartsWith("Before"))
-                        {
-                            break;
-                        }
-
-                        IEnumerable<int> start = input[i].Replace("Before: [", "").Replace("]", string.Empty).Split(',').Select(x => int.Parse(x.Trim()));
-                        IEnumerable<int> instruction = input[i + 1].Split(' ').Select(int.Parse);
-                        IEnumerable<int> end = input[i + 2].Replace("After:  [", "").Replace("]", string.Empty).Split(',').Select(x => int.Parse(x.Trim()));
-
-                        samples.Add(new Sample(start, end, instruction));
-                    }
-
                     AnswerSolution1 = samples.Count(sample => sample.MatchingOperations.Count >= 3);
 
                     StopExecutionTimer();
 
                     return FormatSolution($"A total of [{ConsoleColor.Green}!{AnswerSolution1}] samples have three or more possible opcodes");
                 case ProblemPart.Part2:
-                    AnswerSolution2 = null;
+                    Dictionary<int, Operation> opCodes = new Dictionary<int, Operation>();
+
+                    Dictionary<Operation, List<int>> possibleOpCodes = Enum.GetValues(typeof(Operation)).Cast<Operation>()
+                                                                           .Select(o => new
+                                                                                        {
+                                                                                            operation = o,
+                                                                                            possibilities = samples
+                                                                                                           .Where(s => s.MatchingOperations.Contains(o))
+                                                                                                           .Select(s => s.Instruction[0])
+                                                                                                           .Distinct()
+                                                                                                           .ToList()
+                                                                                        }).ToDictionary(x => x.operation, x => x.possibilities);
+
+                    possibleOpCodes.Where(p => p.Value.Count == 1).ForEach(p => opCodes.Add(p.Value[0], p.Key));
+                    CleanOptions(possibleOpCodes, opCodes);
+
+                    while (possibleOpCodes.Count > 0)
+                    {
+                        (Operation operation, List<int> candidates) = possibleOpCodes.OrderBy(p => p.Value.Count).First();
+                        List<int> winningCandidates = new List<int>();
+                        foreach (int candidate in candidates)
+                        {
+                            List<Sample> samplesToCheck = samples.Where(s => s.Instruction[0] == candidate).Select(s => s).ToList();
+                            bool isWrong = false;
+                            foreach (Sample sampleToCheck in samplesToCheck)
+                            {
+                                int[] testResult =
+                                    Processor.Process(operation, sampleToCheck.Instruction.Skip(1).ToArray(), sampleToCheck.RegisterStart);
+                                if (testResult.SequenceEqual(sampleToCheck.RegisterEnd))
+                                {
+                                    continue;
+                                }
+
+                                isWrong = true;
+                                break;
+                            }
+
+                            if (!isWrong)
+                            {
+                                winningCandidates.Add(candidate);
+                            }
+                        }
+
+                        if (winningCandidates.Count == 1)
+                        {
+                            opCodes.Add(winningCandidates[0], operation);
+                            CleanOptions(possibleOpCodes, opCodes);
+                        }
+                    }
+
+                    int[] registers = new int[4];
+                    for (int i = programStart; i < input.Length; i++)
+                    {
+                        int[] instruction = input[i].Split(' ').Select(int.Parse).ToArray();
+
+                        registers = Processor.Process(opCodes[instruction[0]], instruction.Skip(1).ToArray(), registers);
+                    }
+
+                    AnswerSolution2 = registers[0];
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The answer [{ConsoleColor.Green}!{AnswerSolution2}]");
+                    return FormatSolution($"After running through all the instructions, the resulting value in register 0 is [{ConsoleColor.Green}!{AnswerSolution2}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
+            }
+        }
+
+        private void CleanOptions(Dictionary<Operation, List<int>> possibleOpCodes, Dictionary<int, Operation> opCodes)
+        {
+            foreach (KeyValuePair<int, Operation> opCode in opCodes)
+            {
+                possibleOpCodes.Remove(opCode.Value);
+                possibleOpCodes.Where(p => p.Value.Contains(opCode.Key)).ForEach(p => p.Value.Remove(opCode.Key));
             }
         }
 
@@ -91,7 +160,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
         {
             public static int[] Process(Operation operation, int[] instruction, int[] registers)
             {
-                int[] resultingRegister = registers.ToArray();
+                int[] resultingRegister = new int[4];
+                registers.CopyTo(resultingRegister, 0);
 
                 int a = instruction[0];
                 int b = instruction[1];

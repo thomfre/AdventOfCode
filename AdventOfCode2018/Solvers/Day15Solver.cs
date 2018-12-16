@@ -27,7 +27,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     AnswerSolution1 = PlayGame(battleGroundInput, 3, false);
                     StopExecutionTimer();
 
-                    return FormatSolution($"The answer is [{ConsoleColor.Green}!{AnswerSolution1}]");
+                    return FormatSolution($"The score at the end is [{ConsoleColor.Green}!{AnswerSolution1}]");
                 case ProblemPart.Part2:
                     bool solutionFound = false;
                     int elvesAttackPower = 4;
@@ -45,7 +45,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The answer is [{ConsoleColor.Green}!{AnswerSolution2}]");
+                    return FormatSolution($"The score at the end, with all elves remaining, is [{ConsoleColor.Green}!{AnswerSolution2}]");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
