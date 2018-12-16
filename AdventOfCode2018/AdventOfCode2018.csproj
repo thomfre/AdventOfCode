@@ -38,6 +38,9 @@
     <None Update="Input\Day15.input">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Input\Day16.input">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Input\Day2.input">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

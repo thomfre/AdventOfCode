@@ -20,7 +20,6 @@ namespace Thomfre.AdventOfCode2018.Solvers
             StartExecutionTimer();
             string[] battleGroundInput = GetInput().Split(new[] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries).ToArray();
 
-
             switch (part)
             {
                 case ProblemPart.Part1:
