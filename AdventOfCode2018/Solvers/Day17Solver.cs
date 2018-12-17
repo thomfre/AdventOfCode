@@ -73,10 +73,10 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     FlowDown(500, 0);
 
-                    int minY = _clay.Select(w => w.Y).Min()-1;
-                    int maxY = _clay.Select(w => w.Y).Max()+1;
-                    int minX = _clay.Select(w => w.X).Min()-1;
-                    int maxX = _clay.Select(w => w.X).Max()+1;
+                    int minY = _clay.Select(w => w.Y).Min() - 1;
+                    int maxY = _clay.Select(w => w.Y).Max() + 1;
+                    int minX = _clay.Select(w => w.X).Min() - 1;
+                    int maxX = _clay.Select(w => w.X).Max() + 1;
 
                     for (int y = minY; y < maxY; y++)
                     {
@@ -157,22 +157,15 @@ namespace Thomfre.AdventOfCode2018.Solvers
             }
 
             int yMovement = 0;
-            bool flowing = true;            
+            bool flowing = true;
             while (flowing)
             {
                 i = 0;
-                bool flowingOverEdge = false;
                 int currentY = y - yMovement;
                 while (!_clay.Contains((x + ++i, currentY)))
                 {
                     int currentX = x + i;
-                    if (_clay.Contains((currentX, currentY + 1))) flowingOverEdge = true;
-                    if (flowingOverEdge && !_clay.Contains((currentX, currentY + 1)))
-                    {
-                        flowing = false;
-                        FlowDown(currentX - 1, currentY);
-                        break;
-                    }
+
                     if (currentX > xMax + 1)
                     {
                         flowing = false;
@@ -184,17 +177,9 @@ namespace Thomfre.AdventOfCode2018.Solvers
                 }
 
                 i = 0;
-                flowingOverEdge = false;
                 while (!_clay.Contains((x - ++i, currentY)))
                 {
                     int currentX = x - i;
-                    if (_clay.Contains((currentX, currentY + 1))) flowingOverEdge = true;
-                    if (flowingOverEdge && !_clay.Contains((currentX, currentY + 1)))
-                    {
-                        flowing = false;
-                        FlowDown(currentX + 1, currentY);
-                        break;
-                    }
                     if (currentX < xMin - 1)
                     {
                         flowing = false;
