@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OutputColorizer;
 using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
@@ -86,11 +87,11 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         {
                             if (_water.Contains((x, y)))
                             {
-                                Console.Write("x");
+                                Colorizer.Write("[Blue!o]");
                             }
                             else if (_clay.Contains((x, y)))
                             {
-                                Console.Write("#");
+                                Colorizer.Write("[Red!#]");
                             }
                             else
                             {
@@ -121,13 +122,11 @@ namespace Thomfre.AdventOfCode2018.Solvers
                      {
                          int i = 1;
                          bool clayBelow = _clay.Contains((x, y + i));
-                         bool waterBelow = _water.Contains((x, y + i));
-                         while (!clayBelow && !waterBelow)
+                         while (!clayBelow)
                          {
                              _water.Add((x, y + i));
                              i++;
                              clayBelow = _clay.Contains((x, y + i));
-                             waterBelow = _water.Contains((x, y + i));
 
                              if (y + i > _maxY)
                              {
@@ -178,6 +177,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     }
 
                     AddWater(currentX, currentY);
+                    CheckBelow(currentX, currentY);
                 }
 
                 i = 0;
@@ -192,6 +192,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     }
 
                     AddWater(currentX, currentY);
+                    CheckBelow(currentX, currentY);
                 }
 
                 yMovement++;
@@ -206,6 +207,14 @@ namespace Thomfre.AdventOfCode2018.Solvers
             }
 
             _water.Add((x, y));
+        }
+
+        private void CheckBelow(int x, int y)
+        {
+            if (_clay.Contains((x, y + 1))) return;
+            if(_water.Contains((x, y+1))) return;
+
+            FlowDown(x, y);
         }
     }
 }
