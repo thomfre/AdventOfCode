@@ -1,8 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Thomfre.AdventOfCode2018.Solvers;
-using Thomfre.AdventOfCode2018.Tests.Solvers;
 
-namespace Thomfre.AdventOfCode2018.Tests
+namespace Thomfre.AdventOfCode2018.Tests.Solvers
 {
     [UsedImplicitly]
     internal class Day16SolverTests : SolverTestBase<Day16Solver>

@@ -8,7 +8,7 @@ using Thomfre.AdventOfCode2018.Tools;
 namespace Thomfre.AdventOfCode2018.Tests.Solvers
 {
     [UsedImplicitly]
-    internal class Day15Tests : SolverTestBase<Day15Solver>
+    internal class Day15SolverTests : SolverTestBase<Day15Solver>
     {
         protected override string TestData1 => @"#######
 #.G...#
