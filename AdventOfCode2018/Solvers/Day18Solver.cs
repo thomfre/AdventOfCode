@@ -49,13 +49,9 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
         private void GrowForest(int minutes)
         {
+            List<string> forests = new List<string> {_currentForest};
             for (int i = 0; i < minutes; i++)
             {
-                if (i > 0 && _currentForest == _originalForest)
-                {
-                    // return;
-                }
-
                 StringBuilder newForest = new StringBuilder();
 
                 string[] scanResult = _currentForest.Split(new[] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries).ToArray();
@@ -85,6 +81,27 @@ namespace Thomfre.AdventOfCode2018.Solvers
                 }
 
                 _currentForest = newForest.ToString().Trim();
+                forests.Add(_currentForest);
+
+                if (i <= 1000)
+                {
+                    continue;
+                }
+
+                string firstRepeatedForest = forests.GroupBy(f => f)
+                                                    .Where(group => group.Count() > 1)
+                                                    .Select(group => group.Key)
+                                                    .First();
+
+                int firstIndex = forests.IndexOf(firstRepeatedForest);
+                int nextIndex = forests.IndexOf(firstRepeatedForest, firstIndex + 1);
+
+                int interval = nextIndex - firstIndex;
+
+                int index = firstIndex + (minutes - firstIndex) % interval;
+
+                _currentForest = forests[index];
+                return;
             }
         }
 

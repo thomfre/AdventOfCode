@@ -20,6 +20,6 @@ namespace Thomfre.AdventOfCode2018.Tests.Solvers
         protected override string TestData2 => TestData1;
 
         protected override object CorrectAnswer1 => 1147;
-        protected override object CorrectAnswer2 => null;
+        protected override object CorrectAnswer2 => 0;
     }
 }
