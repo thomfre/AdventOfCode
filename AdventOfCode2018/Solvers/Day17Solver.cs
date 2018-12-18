@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
@@ -116,23 +117,26 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
         private void FlowDown(int x, int y)
         {
-            int i = 1;
-            bool clayBelow = _clay.Contains((x, y + i));
-            bool waterBelow = _water.Contains((x, y + i));
-            while (!clayBelow && !waterBelow)
-            {
-                _water.Add((x, y + i));
-                i++;
-                clayBelow = _clay.Contains((x, y + i));
-                waterBelow = _water.Contains((x, y + i));
+            new Task(() =>
+                     {
+                         int i = 1;
+                         bool clayBelow = _clay.Contains((x, y + i));
+                         bool waterBelow = _water.Contains((x, y + i));
+                         while (!clayBelow && !waterBelow)
+                         {
+                             _water.Add((x, y + i));
+                             i++;
+                             clayBelow = _clay.Contains((x, y + i));
+                             waterBelow = _water.Contains((x, y + i));
 
-                if (y + i > _maxY)
-                {
-                    return;
-                }
-            }
+                             if (y + i > _maxY)
+                             {
+                                 return;
+                             }
+                         }
 
-            FillAndFlowUp(x, y + i - 1);
+                         FillAndFlowUp(x, y + i - 1);
+                     }).Start();
         }
 
         private void FillAndFlowUp(int x, int y)
@@ -145,13 +149,13 @@ namespace Thomfre.AdventOfCode2018.Solvers
             int xMax = x;
             int xMin = x;
             int i = 0;
-            while (!_clay.Contains((x + i++, y)))
+            while (!_clay.Contains((x + i++, y)) && !_water.Contains((x + i, y)))
             {
                 xMax = x + i;
             }
 
             i = 0;
-            while (!_clay.Contains((x - i++, y)))
+            while (!_clay.Contains((x - i++, y)) && !_water.Contains((x - i, y)))
             {
                 xMin = x - i;
             }
