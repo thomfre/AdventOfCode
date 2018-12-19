@@ -17,6 +17,6 @@ y=13, x=498..504";
 
         protected override string TestData2 => TestData1;
         protected override object CorrectAnswer1 => 57;
-        protected override object CorrectAnswer2 => null;
+        protected override object CorrectAnswer2 => 29;
     }
 }
