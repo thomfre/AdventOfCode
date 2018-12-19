@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 using OutputColorizer;
 using Thomfre.AdventOfCode2018.Tools;
 
@@ -9,8 +10,8 @@ namespace Thomfre.AdventOfCode2018.Solvers
     internal class Day17Solver : SolverBase
     {
         private readonly HashSet<(int X, int Y)> _clay = new HashSet<(int X, int Y)>();
+        private readonly HashSet<(int X, int Y)> _restedWater = new HashSet<(int X, int Y)>();
         private readonly HashSet<(int X, int Y)> _water = new HashSet<(int X, int Y)>();
-        private readonly  HashSet<(int X, int Y)> _restedWater = new HashSet<(int X, int Y)>();
         private int _maxY;
         private int _minY;
 
@@ -109,11 +110,11 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     return FormatSolution($"The water can reach a total of [{ConsoleColor.Green}!{AnswerSolution1}] tiles");
                 case ProblemPart.Part2:
-                    AnswerSolution2 = _restedWater.Count(w => w.Y >= _minY && w.Y <= _maxY);
+                    AnswerSolution2 = _restedWater.Count();
 
                     StopExecutionTimer();
 
-                    return FormatSolution($"The water can reach a total of [{ConsoleColor.Green}!{AnswerSolution2}]");
+                    return FormatSolution($"After the stream has gone dry, a total of [{ConsoleColor.Green}!{AnswerSolution2}] water tiles are remaining");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(part), part, null);
             }
@@ -136,10 +137,10 @@ namespace Thomfre.AdventOfCode2018.Solvers
                 }
             }
 
-            FillAndFlowUp(x, y + i - 1);
+            FillContainer(x, y + i - 1);
         }
 
-        private void FillAndFlowUp(int x, int y)
+        private void FillContainer(int x, int y)
         {
             if (y > _maxY)
             {
@@ -148,6 +149,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
             int yMovement = 0;
             bool flowing = true;
+
             while (flowing)
             {
                 int i = 0;
@@ -162,6 +164,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         if (_clay.Contains((currentX - 1, currentY + 1)))
                         {
                             AddWater(currentX, currentY);
+                            MakeWaterBelowRested(currentX - 2, currentY + 1);
                             FlowDown(currentX, currentY);
                         }
 
@@ -181,20 +184,57 @@ namespace Thomfre.AdventOfCode2018.Solvers
                         if (_clay.Contains((currentX + 1, currentY + 1)))
                         {
                             AddWater(currentX, currentY);
+                            MakeWaterBelowRested(currentX + 2, currentY + 1);
                             FlowDown(currentX, currentY);
                         }
 
                         break;
                     }
 
-                    AddWater(currentX, currentY, true);
+                    AddWater(currentX, currentY);
                 }
 
                 yMovement++;
             }
         }
 
-        private void AddWater(int x, int y, bool rested = false)
+        private void MakeWaterBelowRested(int x, int y)
+        {
+            int xMax = x;
+            int xMin = x;
+            int yMin = y;
+            int yMax = y;
+            int i = 0;
+
+            i = 0;
+            while (!_clay.Contains((x, y + i++)) || (_clay.Contains((x, y + i)) && _water.Contains((x, y + i))))
+            {
+                yMax = y + i;
+            }
+
+            while (_clay.Contains((x + ++i, yMax)))
+            {
+                xMax = x + i;
+            }
+
+            i = 0;
+            while (_clay.Contains((x - ++i, yMax)))
+            {
+                xMin = x - i;
+            }
+
+            
+
+            _water.Where(w => w.Y >= yMin && w.Y < yMax && w.X > xMin && w.X <= xMax).ForEach(w =>
+                                                                                          {
+                                                                                              if (!_restedWater.Contains((w.X, w.Y)))
+                                                                                              {
+                                                                                                  _restedWater.Add(w);
+                                                                                              }
+                                                                                          });
+        }
+
+        private void AddWater(int x, int y)
         {
             if (_water.Contains((x, y)))
             {
@@ -202,20 +242,17 @@ namespace Thomfre.AdventOfCode2018.Solvers
             }
 
             _water.Add((x, y));
-            if (rested) _restedWater.Add((x, y));
 
 
             //Sorry, I got tired of fighting with this day
             if (!_water.Contains((x - 1, y)) && _water.Contains((x - 2, y)) && !_clay.Contains((x - 1, y)))
             {
                 _water.Add((x - 1, y));
-                if (rested) _restedWater.Add((x - 1, y));
             }
 
             if (!_water.Contains((x + 1, y)) && _water.Contains((x + 2, y)) && !_clay.Contains((x + 1, y)))
             {
                 _water.Add((x + 1, y));
-                if (rested) _restedWater.Add((x + 1, y));
             }
         }
     }
