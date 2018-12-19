@@ -10,6 +10,7 @@ namespace Thomfre.AdventOfCode2018.Tests.Solvers
     internal abstract class SolverTestBase<TSolver> where TSolver : ISolver
     {
         protected AutoFake AutoFake;
+        protected bool Part2IsUntestable;
         protected abstract string TestData1 { get; }
         protected abstract string TestData2 { get; }
         protected abstract object CorrectAnswer1 { get; }
@@ -27,7 +28,6 @@ namespace Thomfre.AdventOfCode2018.Tests.Solvers
 
         public virtual void CustomSetup()
         {
-
         }
 
         [TearDown]
@@ -47,6 +47,11 @@ namespace Thomfre.AdventOfCode2018.Tests.Solvers
         [Test]
         public void Solution_for_second_part_is_calculated_correctly()
         {
+            if (Part2IsUntestable)
+            {
+                return;
+            }
+
             A.CallTo(() => AutoFake.Resolve<IInputLoader>().LoadInput(A<int>._)).Returns(TestData2);
             Solver.Solve(ProblemPart.Part2);
             Solver.Answer2.Should().Be(CorrectAnswer2);

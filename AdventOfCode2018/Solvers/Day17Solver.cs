@@ -110,6 +110,11 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     return FormatSolution($"The water can reach a total of [{ConsoleColor.Green}!{AnswerSolution1}] tiles");
                 case ProblemPart.Part2:
+                    if (!_restedWater.Any())
+                    {
+                        FlowDown(500, 0);
+                    }
+
                     AnswerSolution2 = _restedWater.Count();
 
                     StopExecutionTimer();
@@ -207,7 +212,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
             int i = 0;
 
             i = 0;
-            while (!_clay.Contains((x, y + i++)) || (_clay.Contains((x, y + i)) && _water.Contains((x, y + i))))
+            while (!_clay.Contains((x, y + i++)) || _clay.Contains((x, y + i)) && _water.Contains((x, y + i)))
             {
                 yMax = y + i;
             }
@@ -223,15 +228,14 @@ namespace Thomfre.AdventOfCode2018.Solvers
                 xMin = x - i;
             }
 
-            
 
             _water.Where(w => w.Y >= yMin && w.Y < yMax && w.X > xMin && w.X <= xMax).ForEach(w =>
-                                                                                          {
-                                                                                              if (!_restedWater.Contains((w.X, w.Y)))
                                                                                               {
-                                                                                                  _restedWater.Add(w);
-                                                                                              }
-                                                                                          });
+                                                                                                  if (!_restedWater.Contains((w.X, w.Y)))
+                                                                                                  {
+                                                                                                      _restedWater.Add(w);
+                                                                                                  }
+                                                                                              });
         }
 
         private void AddWater(int x, int y)

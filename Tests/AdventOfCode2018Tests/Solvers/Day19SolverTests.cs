@@ -17,9 +17,14 @@ setr 1 0 0
 seti 8 0 4
 seti 9 0 5";
 
-        protected override string TestData2 => TestData1;
+        protected override string TestData2 => null;
 
         protected override object CorrectAnswer1 => 7;
         protected override object CorrectAnswer2 => null;
+
+        public override void CustomSetup()
+        {
+            Part2IsUntestable = true;
+        }
     }
 }

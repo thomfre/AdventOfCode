@@ -2,26 +2,25 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using Thomfre.AdventOfCode2018.Tools;
 
 namespace Thomfre.AdventOfCode2018.Solvers
 {
     internal class Day19Solver : SolverBase
     {
+        private int[] _registers = new int[6];
+
         public Day19Solver(IInputLoader inputLoader) : base(inputLoader)
         {
         }
 
         public override int DayNumber => 19;
 
-        long[] _registers = new long[6];
-
         public override string Solve(ProblemPart part)
         {
             StartExecutionTimer();
             string[] input = GetInput().Trim().Split(new[] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
-            int instructionPointerLocation = int.Parse(input[0].Replace("#ip ", ""));            
+            int instructionPointerLocation = int.Parse(input[0].Replace("#ip ", ""));
 
             Processor processor = new Processor(instructionPointerLocation);
 
@@ -44,7 +43,7 @@ namespace Thomfre.AdventOfCode2018.Solvers
 
                     return FormatSolution($"The value of register 0 after the program has been halted is [{ConsoleColor.Green}!{AnswerSolution1}]");
                 case ProblemPart.Part2:
-                    _registers = new long[6];
+                    _registers = new int[6];
                     _registers[0] = 1;
                     RunApplication(processor, instructions, instructionPointerLocation);
 
@@ -68,10 +67,34 @@ namespace Thomfre.AdventOfCode2018.Solvers
                     break;
                 }
 
-                (Operation Operation, int[] Register) instruction = instructions[(int)instructionPointer];
-
+                (Operation Operation, int[] Register) instruction = instructions[(int) instructionPointer];
+                int lastRegister4 = _registers[4];
                 _registers = processor.Process(instruction.Operation, instruction.Register, _registers);
-                Console.WriteLine(string.Join(",", _registers));
+
+                //Not a very nice solution, but it's getting late...
+                if (_registers[4] <= 1000 || _registers[4] != lastRegister4)
+                {
+                    continue;
+                }
+
+                List<int> factors = new List<int>();
+                int max = (int) Math.Sqrt(lastRegister4);
+                for (int factor = 1; factor <= max; ++factor)
+                {
+                    if (lastRegister4 % factor != 0)
+                    {
+                        continue;
+                    }
+
+                    factors.Add(factor);
+                    if (factor != lastRegister4 / factor)
+                    {
+                        factors.Add(lastRegister4 / factor);
+                    }
+                }
+
+                _registers[0] = factors.Sum();
+                return;
             }
         }
     }
@@ -86,9 +109,9 @@ namespace Thomfre.AdventOfCode2018.Solvers
             _instructionPointerLocation = pointerLocation;
         }
 
-        public long[] Process(Operation operation, int[] instruction, long[] registers)
+        public int[] Process(Operation operation, int[] instruction, int[] registers)
         {
-            long[] resultingRegister = new long[6];
+            int[] resultingRegister = new int[6];
             registers.CopyTo(resultingRegister, 0);
 
             int a = instruction[0];
